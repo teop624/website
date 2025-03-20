@@ -1,11 +1,20 @@
 import sqlite3 as sql
 import time
 import random
+import bcrypt
 
+def hashedPassword(password):
+    salt = bcrypt.gensalt()
+    hashedPassword = bcrypt.hashpw(password.encode('utf-8'), salt) #Unicode Transformation Format - 8-bit
+    return hashedPassword.decode('utf-8')
+
+def verifyPassword(password, hashedPassword):
+    return bcrypt.checkpw(password.encode('utf-8'), hashedPassword.encode('utf-8'))
 
 def insertUser(username, password, DoB):
     con = sql.connect("database_files/database.db")
     cur = con.cursor()
+    hashedPassword = hashedPassword(password)
     cur.execute(
         "INSERT INTO users (username,password,dateOfBirth) VALUES (?,?,?)",
         (username, password, DoB),
