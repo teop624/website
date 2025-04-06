@@ -5,6 +5,7 @@ from flask import render_template
 from flask import request
 from flask import redirect
 
+
 # Code snippet for logging a message
 # app.logger.critical("message")
 
