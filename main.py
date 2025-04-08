@@ -7,8 +7,10 @@ from flask import render_template
 from flask import request
 from flask import redirect
 import logging
+import re
 
-
+def sanitize_input(inputSan):
+    return re.sub(r'[<>"\']', '', str(inputSan)) if inputSan else ""
 
 # Code snippet for logging a message
 # app.logger.critical("message")
@@ -24,7 +26,8 @@ def addFeedback():
         url = request.args.get("url", "")
         return redirect(url, code=302)
     if request.method == "POST":
-        feedback = request.form["feedback"]
+        username = sanitize_input(request.form.get("username"))
+        feedback = sanitize_input(request.form.get("feedback"))
         dbHandler.insertFeedback(feedback)
         dbHandler.listFeedback()
         return render_template("/success.html", state=True, value="Back")
@@ -54,11 +57,11 @@ def home():
         username = request.form.get('username')
         session["name"] = username  # Store in session
         return redirect("/")
-    return render_template("/index.html")
-    # First check if user is logged in
-    if not session.get("name"):
+    #return render_template("/index.html")
+
+    if not session.get("name"): # First check if user is logged in
         return redirect("/login")
-    return render_template("index.html") #keep an eye on this line
+    #return render_template("index.html") #keep an eye on this line
         
     if request.method == "GET" and request.args.get("url"):
         url = request.args.get("url", "")
