@@ -9,6 +9,7 @@ from flask import redirect
 import logging
 
 
+
 # Code snippet for logging a message
 # app.logger.critical("message")
 

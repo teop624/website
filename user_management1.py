@@ -5,11 +5,13 @@ import bcrypt
 
 def hashedPassword(password):
     salt = bcrypt.gensalt()
-    hashedPassword = bcrypt.hashpw(password.encode('utf-8'), salt) #Unicode Transformation Format - 8-bit
-    return hashedPassword.decode('utf-8')
-
+    hashedPassword = bcrypt.hashpw(password, salt) #Unicode Transformation Format - 8-bit
+    return hashedPassword
+    #hashedPassword = bcrypt.hashpw(password.encode('utf-8'), salt) #Unicode Transformation Format - 8-bit
+    #return hashedPassword.decode('utf-8')
 def verifyPassword(password, hashedPassword):
-    return bcrypt.checkpw(password.encode('utf-8'), hashedPassword.encode('utf-8'))
+    return bcrypt.checkpw(password, hashedPassword)
+    #return bcrypt.checkpw(password.encode('utf-8'), hashedPassword.encode('utf-8'))
 
 def insertUser(username, password, DoB):
     con = sql.connect("database_files/database.db")
